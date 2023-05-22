@@ -1,7 +1,7 @@
 import Foundation
 
 extension UserDefaults {
-	func _get<Value: Defaults.Serializable>(_ key: String) -> Value? {
+	func _get<Value: DefaultsEnum.Serializable>(_ key: String) -> Value? {
 		guard let anyObject = object(forKey: key) else {
 			return nil
 		}
@@ -9,7 +9,7 @@ extension UserDefaults {
 		return Value.toValue(anyObject)
 	}
 
-	 func _set<Value: Defaults.Serializable>(_ key: String, to value: Value) {
+	 func _set<Value: DefaultsEnum.Serializable>(_ key: String, to value: Value) {
 		if (value as? _DefaultsOptionalProtocol)?.isNil == true {
 			removeObject(forKey: key)
 			return
@@ -18,7 +18,7 @@ extension UserDefaults {
 		set(Value.toSerializable(value), forKey: key)
 	}
 
-	public subscript<Value: Defaults.Serializable>(key: Defaults.Key<Value>) -> Value {
+	public subscript<Value: DefaultsEnum.Serializable>(key: DefaultsEnum.Key<Value>) -> Value {
 		get { _get(key.name) ?? key.defaultValue }
 		set {
 			_set(key.name, to: newValue)

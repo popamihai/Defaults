@@ -1,32 +1,32 @@
 import CoreGraphics
 import Foundation
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
-	Type-erased wrapper for `Defaults.Serializable` values.
+	Type-erased wrapper for `DefaultsEnum.Serializable` values.
 
-	It can be useful when you need to create an `Any` value that conforms to `Defaults.Serializable`.
+	It can be useful when you need to create an `Any` value that conforms to `DefaultsEnum.Serializable`.
 
 	It will have an internal property `value` which should always be a `UserDefaults` natively supported type.
 
 	`get` will deserialize the internal value to the type that user specify in the function parameter.
 
 	```swift
-	let any = Defaults.Key<Defaults.AnySerializable>("independentAnyKey", default: 121_314)
+	let any = DefaultsEnum.Key<DefaultsEnum.AnySerializable>("independentAnyKey", default: 121_314)
 
-	print(Defaults[any].get(Int.self))
+	print(DefaultsEnum[any].get(Int.self))
 	//=> 121_314
 	```
 
 	- Note: The only way to assign a non-serializable value is using `ExpressibleByArrayLiteral` or `ExpressibleByDictionaryLiteral` to assign a type that is not a `UserDefaults` natively supported type.
 
 	```swift
-	private enum mime: String, Defaults.Serializable {
+	private enum mime: String, DefaultsEnum.Serializable {
 		case JSON = "application/json"
 	}
 
 	// Failed: Attempt to insert non-property list object
-	let any = Defaults.Key<Defaults.AnySerializable>("independentAnyKey", default: [mime.JSON])
+	let any = DefaultsEnum.Key<DefaultsEnum.AnySerializable>("independentAnyKey", default: [mime.JSON])
 	```
 	*/
 	public struct AnySerializable: Serializable {
@@ -55,7 +55,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults.AnySerializable: Hashable {
+extension DefaultsEnum.AnySerializable: Hashable {
 	public func hash(into hasher: inout Hasher) {
 		switch value {
 		case let value as Data:
@@ -102,7 +102,7 @@ extension Defaults.AnySerializable: Hashable {
 	}
 }
 
-extension Defaults.AnySerializable: Equatable {
+extension DefaultsEnum.AnySerializable: Equatable {
 	public static func == (lhs: Self, rhs: Self) -> Bool {
 		switch (lhs.value, rhs.value) {
 		case (let lhs as Data, let rhs as Data):
@@ -149,61 +149,61 @@ extension Defaults.AnySerializable: Equatable {
 	}
 }
 
-extension Defaults.AnySerializable: ExpressibleByStringLiteral {
+extension DefaultsEnum.AnySerializable: ExpressibleByStringLiteral {
 	public init(stringLiteral value: String) {
 		self.init(value: value)
 	}
 }
 
-extension Defaults.AnySerializable: ExpressibleByNilLiteral {
+extension DefaultsEnum.AnySerializable: ExpressibleByNilLiteral {
 	public init(nilLiteral _: ()) {
 		self.init(value: nil as Any?)
 	}
 }
 
-extension Defaults.AnySerializable: ExpressibleByBooleanLiteral {
+extension DefaultsEnum.AnySerializable: ExpressibleByBooleanLiteral {
 	public init(booleanLiteral value: Bool) {
 		self.init(value: value)
 	}
 }
 
-extension Defaults.AnySerializable: ExpressibleByIntegerLiteral {
+extension DefaultsEnum.AnySerializable: ExpressibleByIntegerLiteral {
 	public init(integerLiteral value: Int) {
 		self.init(value: value)
 	}
 }
 
-extension Defaults.AnySerializable: ExpressibleByFloatLiteral {
+extension DefaultsEnum.AnySerializable: ExpressibleByFloatLiteral {
 	public init(floatLiteral value: Double) {
 		self.init(value: value)
 	}
 }
 
-extension Defaults.AnySerializable: ExpressibleByArrayLiteral {
+extension DefaultsEnum.AnySerializable: ExpressibleByArrayLiteral {
 	public init(arrayLiteral elements: Any...) {
 		self.init(value: elements)
 	}
 }
 
-extension Defaults.AnySerializable: ExpressibleByDictionaryLiteral {
+extension DefaultsEnum.AnySerializable: ExpressibleByDictionaryLiteral {
 	public init(dictionaryLiteral elements: (AnyHashable, Any)...) {
 		self.init(value: [AnyHashable: Any](uniqueKeysWithValues: elements))
 	}
 }
 
-extension Defaults.AnySerializable: _DefaultsOptionalProtocol {
+extension DefaultsEnum.AnySerializable: _DefaultsOptionalProtocol {
 	// Since `nil` cannot be assigned to `Any`, we use `Void` instead of `nil`.
 	public var isNil: Bool { value is Void }
 }
 
 extension Sequence {
-	fileprivate func toSequence() -> [Defaults.AnySerializable] {
-		map { Defaults.AnySerializable(value: $0) }
+	fileprivate func toSequence() -> [DefaultsEnum.AnySerializable] {
+		map { DefaultsEnum.AnySerializable(value: $0) }
 	}
 }
 
 extension Dictionary {
-	fileprivate func toDictionary() -> [AnyHashable: Defaults.AnySerializable] {
-		reduce(into: [AnyHashable: Defaults.AnySerializable]()) { memo, tuple in memo[tuple.key] = Defaults.AnySerializable(value: tuple.value) }
+	fileprivate func toDictionary() -> [AnyHashable: DefaultsEnum.AnySerializable] {
+		reduce(into: [AnyHashable: DefaultsEnum.AnySerializable]()) { memo, tuple in memo[tuple.key] = DefaultsEnum.AnySerializable(value: tuple.value) }
 	}
 }

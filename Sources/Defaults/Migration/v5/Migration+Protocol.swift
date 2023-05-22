@@ -3,7 +3,7 @@ import Foundation
 /**
 Only exists for migration.
 
-Represents the type after migration and its protocol should conform to `Defaults.Serializable`.
+Represents the type after migration and its protocol should conform to `DefaultsEnum.Serializable`.
 
 It should have an associated type name `CodableForm` where its protocol conform to `Codable`.
 
@@ -20,8 +20,8 @@ else {
 return codable.toNative()
 ```
 */
-public protocol _DefaultsNativeType: Defaults.Serializable {
-	associatedtype CodableForm: Defaults.CodableType
+public protocol _DefaultsNativeType: DefaultsEnum.Serializable {
+	associatedtype CodableForm: DefaultsEnum.CodableType
 }
 
 /**
@@ -42,11 +42,11 @@ struct CodableUser: Codable {
 	password: String
 }
 
-extension User: Defaults.NativeType {
+extension User: DefaultsEnum.NativeType {
 	typealias CodableForm = CodableUser
 }
 
-extension CodableUser: Defaults.CodableType {
+extension CodableUser: DefaultsEnum.CodableType {
 	typealias NativeForm = User
 
 	func toNative() -> NativeForm {
@@ -56,6 +56,6 @@ extension CodableUser: Defaults.CodableType {
 ```
 */
 public protocol _DefaultsCodableType: Codable {
-	associatedtype NativeForm: Defaults.NativeType
+	associatedtype NativeForm: DefaultsEnum.NativeType
 	func toNative() -> NativeForm
 }

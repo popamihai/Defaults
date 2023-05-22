@@ -7,7 +7,7 @@ public protocol _DefaultsObservation: AnyObject {
 	Keep this observation alive for as long as, and no longer than, another object exists.
 
 	```swift
-	Defaults.observe(.xyz) { [unowned self] change in
+	DefaultsEnum.observe(.xyz) { [unowned self] change in
 		self.xyz = change.newValue
 	}.tieToLifetime(of: self)
 	```
@@ -24,7 +24,7 @@ public protocol _DefaultsObservation: AnyObject {
 	func removeLifetimeTie()
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public typealias Observation = _DefaultsObservation
 
 	public enum ObservationOption {
@@ -91,21 +91,21 @@ extension Defaults {
 	/**
 	Execute the closure without triggering change events.
 
-	Any `Defaults` key changes made within the closure will not propagate to `Defaults` event listeners (`Defaults.observe()` and `Defaults.publisher()`). This can be useful to prevent infinite recursion when you want to change a key in the callback listening to changes for the same key.
+	Any `DefaultsEnum` key changes made within the closure will not propagate to `DefaultsEnum` event listeners (`DefaultsEnum.observe()` and `DefaultsEnum.publisher()`). This can be useful to prevent infinite recursion when you want to change a key in the callback listening to changes for the same key.
 
-	- Note: This only works with `Defaults.observe()` and `Defaults.publisher()`. User-made KVO will not be affected.
+	- Note: This only works with `DefaultsEnum.observe()` and `DefaultsEnum.publisher()`. User-made KVO will not be affected.
 
 	```swift
-	let observer = Defaults.observe(keys: .key1, .key2) {
+	let observer = DefaultsEnum.observe(keys: .key1, .key2) {
 		// …
 
-		Defaults.withoutPropagation {
+		DefaultsEnum.withoutPropagation {
 			// Update `.key1` without propagating the change to listeners.
-			Defaults[.key1] = 11
+			DefaultsEnum[.key1] = 11
 		}
 
 		// This will be propagated.
-		Defaults[.someKey] = true
+		DefaultsEnum[.someKey] = true
 	}
 	```
 	*/
@@ -284,17 +284,17 @@ extension Defaults {
 	Observe a defaults key.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let isUnicornMode = Key<Bool>("isUnicornMode", default: false)
 	}
 
-	let observer = Defaults.observe(.isUnicornMode) { change in
+	let observer = DefaultsEnum.observe(.isUnicornMode) { change in
 		print(change.newValue)
 		//=> false
 	}
 	```
 
-	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``Defaults/updates(_:initial:)-9eh8`` instead.
+	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``DefaultsEnum/updates(_:initial:)-9eh8`` instead.
 	*/
 	public static func observe<Value: Serializable>(
 		_ key: Key<Value>,
@@ -315,17 +315,17 @@ extension Defaults {
 	Observe multiple keys of any type, but without any information about the changes.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let setting1 = Key<Bool>("setting1", default: false)
 		static let setting2 = Key<Bool>("setting2", default: true)
 	}
 
-	let observer = Defaults.observe(keys: .setting1, .setting2) {
+	let observer = DefaultsEnum.observe(keys: .setting1, .setting2) {
 		// …
 	}
 	```
 
-	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``Defaults/updates(_:initial:)-9eh8`` instead.
+	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``DefaultsEnum/updates(_:initial:)-9eh8`` instead.
 	*/
 	public static func observe(
 		keys: _AnyKey...,
@@ -344,7 +344,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults.ObservationOptions {
+extension DefaultsEnum.ObservationOptions {
 	var toNSKeyValueObservingOptions: NSKeyValueObservingOptions {
 		var options: NSKeyValueObservingOptions = [.old, .new]
 
@@ -358,4 +358,4 @@ extension Defaults.ObservationOptions {
 	}
 }
 
-extension Defaults.KeyChange: Equatable where Value: Equatable {}
+extension DefaultsEnum.KeyChange: Equatable where Value: Equatable {}

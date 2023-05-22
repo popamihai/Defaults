@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 import Defaults
 
-struct DefaultsSetAlgebra<Element: Defaults.Serializable & Hashable>: SetAlgebra {
+struct DefaultsSetAlgebra<Element: DefaultsEnum.Serializable & Hashable>: SetAlgebra {
 	var store = Set<Element>()
 
 	init() {}
@@ -61,7 +61,7 @@ struct DefaultsSetAlgebra<Element: Defaults.Serializable & Hashable>: SetAlgebra
 	}
 }
 
-extension DefaultsSetAlgebra: Defaults.SetAlgebraSerializable {
+extension DefaultsSetAlgebra: DefaultsEnum.SetAlgebraSerializable {
 	func toArray() -> [Element] {
 		Array(store)
 	}
@@ -72,7 +72,7 @@ private let fixtureSetAlgebra1 = 1
 private let fixtureSetAlgebra2 = 2
 private let fixtureSetAlgebra3 = 3
 
-extension Defaults.Keys {
+extension DefaultsEnum.Keys {
 	fileprivate static let setAlgebra = Key<DefaultsSetAlgebra<Int>>("setAlgebra", default: .init([fixtureSetAlgebra]))
 	fileprivate static let setAlgebraArray = Key<[DefaultsSetAlgebra<Int>]>("setAlgebraArray", default: [.init([fixtureSetAlgebra])])
 	fileprivate static let setAlgebraDictionary = Key<[String: DefaultsSetAlgebra<Int>]>("setAlgebraDictionary", default: ["0": .init([fixtureSetAlgebra])])
@@ -81,136 +81,136 @@ extension Defaults.Keys {
 final class DefaultsSetAlgebraTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	override func tearDown() {
 		super.tearDown()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	func testKey() {
-		let key = Defaults.Key<DefaultsSetAlgebra<Int>>("independentSetAlgebraKey", default: .init([fixtureSetAlgebra]))
-		Defaults[key].insert(fixtureSetAlgebra)
-		XCTAssertEqual(Defaults[key], .init([fixtureSetAlgebra]))
-		Defaults[key].insert(fixtureSetAlgebra1)
-		XCTAssertEqual(Defaults[key], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		let key = DefaultsEnum.Key<DefaultsSetAlgebra<Int>>("independentSetAlgebraKey", default: .init([fixtureSetAlgebra]))
+		DefaultsEnum[key].insert(fixtureSetAlgebra)
+		XCTAssertEqual(DefaultsEnum[key], .init([fixtureSetAlgebra]))
+		DefaultsEnum[key].insert(fixtureSetAlgebra1)
+		XCTAssertEqual(DefaultsEnum[key], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
 	}
 
 	func testOptionalKey() {
-		let key = Defaults.Key<DefaultsSetAlgebra<Int>?>("independentSetAlgebraOptionalKey")
-		XCTAssertNil(Defaults[key])
-		Defaults[key] = .init([fixtureSetAlgebra])
-		Defaults[key]?.insert(fixtureSetAlgebra)
-		XCTAssertEqual(Defaults[key], .init([fixtureSetAlgebra]))
-		Defaults[key]?.insert(fixtureSetAlgebra1)
-		XCTAssertEqual(Defaults[key], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		let key = DefaultsEnum.Key<DefaultsSetAlgebra<Int>?>("independentSetAlgebraOptionalKey")
+		XCTAssertNil(DefaultsEnum[key])
+		DefaultsEnum[key] = .init([fixtureSetAlgebra])
+		DefaultsEnum[key]?.insert(fixtureSetAlgebra)
+		XCTAssertEqual(DefaultsEnum[key], .init([fixtureSetAlgebra]))
+		DefaultsEnum[key]?.insert(fixtureSetAlgebra1)
+		XCTAssertEqual(DefaultsEnum[key], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
 	}
 
 	func testArrayKey() {
-		let key = Defaults.Key<[DefaultsSetAlgebra<Int>]>("independentSetAlgebraArrayKey", default: [.init([fixtureSetAlgebra])])
-		Defaults[key][0].insert(fixtureSetAlgebra1)
-		Defaults[key].append(.init([fixtureSetAlgebra2]))
-		Defaults[key][1].insert(fixtureSetAlgebra3)
-		XCTAssertEqual(Defaults[key][0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[key][1], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		let key = DefaultsEnum.Key<[DefaultsSetAlgebra<Int>]>("independentSetAlgebraArrayKey", default: [.init([fixtureSetAlgebra])])
+		DefaultsEnum[key][0].insert(fixtureSetAlgebra1)
+		DefaultsEnum[key].append(.init([fixtureSetAlgebra2]))
+		DefaultsEnum[key][1].insert(fixtureSetAlgebra3)
+		XCTAssertEqual(DefaultsEnum[key][0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[key][1], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testArrayOptionalKey() {
-		let key = Defaults.Key<[DefaultsSetAlgebra<Int>]?>("independentSetAlgebraArrayOptionalKey")
-		XCTAssertNil(Defaults[key])
-		Defaults[key] = [.init([fixtureSetAlgebra])]
-		Defaults[key]?[0].insert(fixtureSetAlgebra1)
-		Defaults[key]?.append(.init([fixtureSetAlgebra2]))
-		Defaults[key]?[1].insert(fixtureSetAlgebra3)
-		XCTAssertEqual(Defaults[key]?[0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[key]?[1], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		let key = DefaultsEnum.Key<[DefaultsSetAlgebra<Int>]?>("independentSetAlgebraArrayOptionalKey")
+		XCTAssertNil(DefaultsEnum[key])
+		DefaultsEnum[key] = [.init([fixtureSetAlgebra])]
+		DefaultsEnum[key]?[0].insert(fixtureSetAlgebra1)
+		DefaultsEnum[key]?.append(.init([fixtureSetAlgebra2]))
+		DefaultsEnum[key]?[1].insert(fixtureSetAlgebra3)
+		XCTAssertEqual(DefaultsEnum[key]?[0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[key]?[1], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testNestedArrayKey() {
-		let key = Defaults.Key<[[DefaultsSetAlgebra<Int>]]>("independentSetAlgebraNestedArrayKey", default: [[.init([fixtureSetAlgebra])]])
-		Defaults[key][0][0].insert(fixtureSetAlgebra1)
-		Defaults[key][0].append(.init([fixtureSetAlgebra1]))
-		Defaults[key][0][1].insert(fixtureSetAlgebra2)
-		Defaults[key].append([.init([fixtureSetAlgebra3])])
-		Defaults[key][1][0].insert(fixtureSetAlgebra2)
-		XCTAssertEqual(Defaults[key][0][0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[key][0][1], .init([fixtureSetAlgebra1, fixtureSetAlgebra2]))
-		XCTAssertEqual(Defaults[key][1][0], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		let key = DefaultsEnum.Key<[[DefaultsSetAlgebra<Int>]]>("independentSetAlgebraNestedArrayKey", default: [[.init([fixtureSetAlgebra])]])
+		DefaultsEnum[key][0][0].insert(fixtureSetAlgebra1)
+		DefaultsEnum[key][0].append(.init([fixtureSetAlgebra1]))
+		DefaultsEnum[key][0][1].insert(fixtureSetAlgebra2)
+		DefaultsEnum[key].append([.init([fixtureSetAlgebra3])])
+		DefaultsEnum[key][1][0].insert(fixtureSetAlgebra2)
+		XCTAssertEqual(DefaultsEnum[key][0][0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[key][0][1], .init([fixtureSetAlgebra1, fixtureSetAlgebra2]))
+		XCTAssertEqual(DefaultsEnum[key][1][0], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testArrayDictionaryKey() {
-		let key = Defaults.Key<[[String: DefaultsSetAlgebra<Int>]]>("independentSetAlgebraArrayDictionaryKey", default: [["0": .init([fixtureSetAlgebra])]])
-		Defaults[key][0]["0"]?.insert(fixtureSetAlgebra1)
-		Defaults[key][0]["1"] = .init([fixtureSetAlgebra1])
-		Defaults[key][0]["1"]?.insert(fixtureSetAlgebra2)
-		Defaults[key].append(["0": .init([fixtureSetAlgebra3])])
-		Defaults[key][1]["0"]?.insert(fixtureSetAlgebra2)
-		XCTAssertEqual(Defaults[key][0]["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[key][0]["1"], .init([fixtureSetAlgebra1, fixtureSetAlgebra2]))
-		XCTAssertEqual(Defaults[key][1]["0"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		let key = DefaultsEnum.Key<[[String: DefaultsSetAlgebra<Int>]]>("independentSetAlgebraArrayDictionaryKey", default: [["0": .init([fixtureSetAlgebra])]])
+		DefaultsEnum[key][0]["0"]?.insert(fixtureSetAlgebra1)
+		DefaultsEnum[key][0]["1"] = .init([fixtureSetAlgebra1])
+		DefaultsEnum[key][0]["1"]?.insert(fixtureSetAlgebra2)
+		DefaultsEnum[key].append(["0": .init([fixtureSetAlgebra3])])
+		DefaultsEnum[key][1]["0"]?.insert(fixtureSetAlgebra2)
+		XCTAssertEqual(DefaultsEnum[key][0]["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[key][0]["1"], .init([fixtureSetAlgebra1, fixtureSetAlgebra2]))
+		XCTAssertEqual(DefaultsEnum[key][1]["0"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testDictionaryKey() {
-		let key = Defaults.Key<[String: DefaultsSetAlgebra<Int>]>("independentSetAlgebraDictionaryKey", default: ["0": .init([fixtureSetAlgebra])])
-		Defaults[key]["0"]?.insert(fixtureSetAlgebra1)
-		Defaults[key]["1"] = .init([fixtureSetAlgebra2])
-		Defaults[key]["1"]?.insert(fixtureSetAlgebra3)
-		XCTAssertEqual(Defaults[key]["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[key]["1"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		let key = DefaultsEnum.Key<[String: DefaultsSetAlgebra<Int>]>("independentSetAlgebraDictionaryKey", default: ["0": .init([fixtureSetAlgebra])])
+		DefaultsEnum[key]["0"]?.insert(fixtureSetAlgebra1)
+		DefaultsEnum[key]["1"] = .init([fixtureSetAlgebra2])
+		DefaultsEnum[key]["1"]?.insert(fixtureSetAlgebra3)
+		XCTAssertEqual(DefaultsEnum[key]["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[key]["1"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testDictionaryOptionalKey() {
-		let key = Defaults.Key<[String: DefaultsSetAlgebra<Int>]?>("independentSetAlgebraDictionaryOptionalKey")
-		XCTAssertNil(Defaults[key])
-		Defaults[key] = ["0": .init([fixtureSetAlgebra])]
-		Defaults[key]?["0"]?.insert(fixtureSetAlgebra1)
-		Defaults[key]?["1"] = .init([fixtureSetAlgebra2])
-		Defaults[key]?["1"]?.insert(fixtureSetAlgebra3)
-		XCTAssertEqual(Defaults[key]?["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[key]?["1"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		let key = DefaultsEnum.Key<[String: DefaultsSetAlgebra<Int>]?>("independentSetAlgebraDictionaryOptionalKey")
+		XCTAssertNil(DefaultsEnum[key])
+		DefaultsEnum[key] = ["0": .init([fixtureSetAlgebra])]
+		DefaultsEnum[key]?["0"]?.insert(fixtureSetAlgebra1)
+		DefaultsEnum[key]?["1"] = .init([fixtureSetAlgebra2])
+		DefaultsEnum[key]?["1"]?.insert(fixtureSetAlgebra3)
+		XCTAssertEqual(DefaultsEnum[key]?["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[key]?["1"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testDictionaryArrayKey() {
-		let key = Defaults.Key<[String: [DefaultsSetAlgebra<Int>]]>("independentSetAlgebraDictionaryArrayKey", default: ["0": [.init([fixtureSetAlgebra])]])
-		Defaults[key]["0"]?[0].insert(fixtureSetAlgebra1)
-		Defaults[key]["0"]?.append(.init([fixtureSetAlgebra1]))
-		Defaults[key]["0"]?[1].insert(fixtureSetAlgebra2)
-		Defaults[key]["1"] = [.init([fixtureSetAlgebra3])]
-		Defaults[key]["1"]?[0].insert(fixtureSetAlgebra2)
-		XCTAssertEqual(Defaults[key]["0"]?[0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[key]["0"]?[1], .init([fixtureSetAlgebra1, fixtureSetAlgebra2]))
-		XCTAssertEqual(Defaults[key]["1"]?[0], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		let key = DefaultsEnum.Key<[String: [DefaultsSetAlgebra<Int>]]>("independentSetAlgebraDictionaryArrayKey", default: ["0": [.init([fixtureSetAlgebra])]])
+		DefaultsEnum[key]["0"]?[0].insert(fixtureSetAlgebra1)
+		DefaultsEnum[key]["0"]?.append(.init([fixtureSetAlgebra1]))
+		DefaultsEnum[key]["0"]?[1].insert(fixtureSetAlgebra2)
+		DefaultsEnum[key]["1"] = [.init([fixtureSetAlgebra3])]
+		DefaultsEnum[key]["1"]?[0].insert(fixtureSetAlgebra2)
+		XCTAssertEqual(DefaultsEnum[key]["0"]?[0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[key]["0"]?[1], .init([fixtureSetAlgebra1, fixtureSetAlgebra2]))
+		XCTAssertEqual(DefaultsEnum[key]["1"]?[0], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testType() {
-		let (inserted, _) = Defaults[.setAlgebra].insert(fixtureSetAlgebra)
+		let (inserted, _) = DefaultsEnum[.setAlgebra].insert(fixtureSetAlgebra)
 		XCTAssertFalse(inserted)
-		Defaults[.setAlgebra].insert(fixtureSetAlgebra1)
-		XCTAssertEqual(Defaults[.setAlgebra], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		DefaultsEnum[.setAlgebra].insert(fixtureSetAlgebra1)
+		XCTAssertEqual(DefaultsEnum[.setAlgebra], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
 	}
 
 	func testArrayType() {
-		Defaults[.setAlgebraArray][0].insert(fixtureSetAlgebra1)
-		Defaults[.setAlgebraArray].append(.init([fixtureSetAlgebra2]))
-		Defaults[.setAlgebraArray][1].insert(fixtureSetAlgebra3)
-		XCTAssertEqual(Defaults[.setAlgebraArray][0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[.setAlgebraArray][1], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		DefaultsEnum[.setAlgebraArray][0].insert(fixtureSetAlgebra1)
+		DefaultsEnum[.setAlgebraArray].append(.init([fixtureSetAlgebra2]))
+		DefaultsEnum[.setAlgebraArray][1].insert(fixtureSetAlgebra3)
+		XCTAssertEqual(DefaultsEnum[.setAlgebraArray][0], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[.setAlgebraArray][1], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testDictionaryType() {
-		Defaults[.setAlgebraDictionary]["0"]?.insert(fixtureSetAlgebra1)
-		Defaults[.setAlgebraDictionary]["1"] = .init([fixtureSetAlgebra2])
-		Defaults[.setAlgebraDictionary]["1"]?.insert(fixtureSetAlgebra3)
-		XCTAssertEqual(Defaults[.setAlgebraDictionary]["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
-		XCTAssertEqual(Defaults[.setAlgebraDictionary]["1"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
+		DefaultsEnum[.setAlgebraDictionary]["0"]?.insert(fixtureSetAlgebra1)
+		DefaultsEnum[.setAlgebraDictionary]["1"] = .init([fixtureSetAlgebra2])
+		DefaultsEnum[.setAlgebraDictionary]["1"]?.insert(fixtureSetAlgebra3)
+		XCTAssertEqual(DefaultsEnum[.setAlgebraDictionary]["0"], .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
+		XCTAssertEqual(DefaultsEnum[.setAlgebraDictionary]["1"], .init([fixtureSetAlgebra2, fixtureSetAlgebra3]))
 	}
 
 	func testObserveKeyCombine() {
-		let key = Defaults.Key<DefaultsSetAlgebra<Int>>("observeSetAlgebraKeyCombine", default: .init([fixtureSetAlgebra]))
+		let key = DefaultsEnum.Key<DefaultsSetAlgebra<Int>>("observeSetAlgebraKeyCombine", default: .init([fixtureSetAlgebra]))
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(2)
@@ -226,18 +226,18 @@ final class DefaultsSetAlgebraTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key].insert(fixtureSetAlgebra1)
-		Defaults.reset(key)
+		DefaultsEnum[key].insert(fixtureSetAlgebra1)
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveOptionalKeyCombine() {
-		let key = Defaults.Key<DefaultsSetAlgebra<Int>?>("observeSetAlgebraOptionalKeyCombine")
+		let key = DefaultsEnum.Key<DefaultsSetAlgebra<Int>?>("observeSetAlgebraOptionalKeyCombine")
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(3)
@@ -253,19 +253,19 @@ final class DefaultsSetAlgebraTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key] = .init([fixtureSetAlgebra])
-		Defaults[key]?.insert(fixtureSetAlgebra1)
-		Defaults.reset(key)
+		DefaultsEnum[key] = .init([fixtureSetAlgebra])
+		DefaultsEnum[key]?.insert(fixtureSetAlgebra1)
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveArrayKeyCombine() {
-		let key = Defaults.Key<[DefaultsSetAlgebra<Int>]>("observeSetAlgebraArrayKeyCombine", default: [.init([fixtureSetAlgebra])])
+		let key = DefaultsEnum.Key<[DefaultsSetAlgebra<Int>]>("observeSetAlgebraArrayKeyCombine", default: [.init([fixtureSetAlgebra])])
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(2)
@@ -281,18 +281,18 @@ final class DefaultsSetAlgebraTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key][0].insert(fixtureSetAlgebra1)
-		Defaults.reset(key)
+		DefaultsEnum[key][0].insert(fixtureSetAlgebra1)
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveDictionaryKeyCombine() {
-		let key = Defaults.Key<[String: DefaultsSetAlgebra<Int>]>("observeSetAlgebraDictionaryKeyCombine", default: ["0": .init([fixtureSetAlgebra])])
+		let key = DefaultsEnum.Key<[String: DefaultsSetAlgebra<Int>]>("observeSetAlgebraDictionaryKeyCombine", default: ["0": .init([fixtureSetAlgebra])])
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(2)
@@ -308,80 +308,80 @@ final class DefaultsSetAlgebraTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key]["0"]?.insert(fixtureSetAlgebra1)
-		Defaults.reset(key)
+		DefaultsEnum[key]["0"]?.insert(fixtureSetAlgebra1)
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveKey() {
-		let key = Defaults.Key<DefaultsSetAlgebra<Int>>("observeSetAlgebraKey", default: .init([fixtureSetAlgebra]))
+		let key = DefaultsEnum.Key<DefaultsSetAlgebra<Int>>("observeSetAlgebraKey", default: .init([fixtureSetAlgebra]))
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertEqual(change.oldValue, .init([fixtureSetAlgebra]))
 			XCTAssertEqual(change.newValue, .init([fixtureSetAlgebra, fixtureSetAlgebra1]))
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key].insert(fixtureSetAlgebra1)
+		DefaultsEnum[key].insert(fixtureSetAlgebra1)
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveOptionalKey() {
-		let key = Defaults.Key<DefaultsSetAlgebra<Int>?>("observeSetAlgebraOptionalKey")
+		let key = DefaultsEnum.Key<DefaultsSetAlgebra<Int>?>("observeSetAlgebraOptionalKey")
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertNil(change.oldValue)
 			XCTAssertEqual(change.newValue, .init([fixtureSetAlgebra]))
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key] = .init([fixtureSetAlgebra])
+		DefaultsEnum[key] = .init([fixtureSetAlgebra])
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveArrayKey() {
-		let key = Defaults.Key<[DefaultsSetAlgebra<Int>]>("observeSetAlgebraArrayKey", default: [.init([fixtureSetAlgebra])])
+		let key = DefaultsEnum.Key<[DefaultsSetAlgebra<Int>]>("observeSetAlgebraArrayKey", default: [.init([fixtureSetAlgebra])])
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertEqual(change.oldValue[0], .init([fixtureSetAlgebra]))
 			XCTAssertEqual(change.newValue[1], .init([fixtureSetAlgebra]))
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key].append(.init([fixtureSetAlgebra]))
+		DefaultsEnum[key].append(.init([fixtureSetAlgebra]))
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveDictioanryKey() {
-		let key = Defaults.Key<[String: DefaultsSetAlgebra<Int>]>("observeSetAlgebraDictionaryKey", default: ["0": .init([fixtureSetAlgebra])])
+		let key = DefaultsEnum.Key<[String: DefaultsSetAlgebra<Int>]>("observeSetAlgebraDictionaryKey", default: ["0": .init([fixtureSetAlgebra])])
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertEqual(change.oldValue["0"], .init([fixtureSetAlgebra]))
 			XCTAssertEqual(change.newValue["1"], .init([fixtureSetAlgebra]))
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key]["1"] = .init([fixtureSetAlgebra])
+		DefaultsEnum[key]["1"] = .init([fixtureSetAlgebra])
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)

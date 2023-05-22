@@ -1,7 +1,7 @@
 import Foundation
 
 extension UserDefaults {
-	func migrateCodableToNative<Value: Defaults.Serializable & Codable>(forKey key: String, of type: Value.Type) {
+	func migrateCodableToNative<Value: DefaultsEnum.Serializable & Codable>(forKey key: String, of type: Value.Type) {
 		guard
 			let jsonData = string(forKey: key)?.data(using: .utf8),
 			let codable = try? JSONDecoder().decode(Value.self, from: jsonData)
@@ -35,7 +35,7 @@ extension UserDefaults {
 	JSONDecoder().decode([String].self, from: jsonData)
 	```
 	*/
-	func migrateCodableToNative<Value: Defaults.NativeType>(forKey key: String, of type: Value.Type) {
+	func migrateCodableToNative<Value: DefaultsEnum.NativeType>(forKey key: String, of type: Value.Type) {
 		guard
 			let jsonData = string(forKey: key)?.data(using: .utf8),
 			let codable = try? JSONDecoder().decode(Value.CodableForm.self, from: jsonData)

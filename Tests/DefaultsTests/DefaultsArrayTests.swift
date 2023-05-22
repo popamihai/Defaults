@@ -4,89 +4,89 @@ import XCTest
 
 private let fixtureArray = ["Hank", "Chen"]
 
-extension Defaults.Keys {
+extension DefaultsEnum.Keys {
 	fileprivate static let array = Key<[String]>("array", default: fixtureArray)
 }
 
 final class DefaultsArrayTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	override func tearDown() {
 		super.tearDown()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	func testKey() {
-		let key = Defaults.Key<[String]>("independentArrayStringKey", default: fixtureArray)
-		XCTAssertEqual(Defaults[key][0], fixtureArray[0])
+		let key = DefaultsEnum.Key<[String]>("independentArrayStringKey", default: fixtureArray)
+		XCTAssertEqual(DefaultsEnum[key][0], fixtureArray[0])
 		let newValue = "John"
-		Defaults[key][0] = newValue
-		XCTAssertEqual(Defaults[key][0], newValue)
+		DefaultsEnum[key][0] = newValue
+		XCTAssertEqual(DefaultsEnum[key][0], newValue)
 	}
 
 	func testOptionalKey() {
-		let key = Defaults.Key<[String]?>("independentArrayOptionalStringKey")
-		XCTAssertNil(Defaults[key])
-		Defaults[key] = fixtureArray
-		XCTAssertEqual(Defaults[key]?[0], fixtureArray[0])
-		Defaults[key] = nil
-		XCTAssertNil(Defaults[key])
+		let key = DefaultsEnum.Key<[String]?>("independentArrayOptionalStringKey")
+		XCTAssertNil(DefaultsEnum[key])
+		DefaultsEnum[key] = fixtureArray
+		XCTAssertEqual(DefaultsEnum[key]?[0], fixtureArray[0])
+		DefaultsEnum[key] = nil
+		XCTAssertNil(DefaultsEnum[key])
 		let newValue = ["John", "Chen"]
-		Defaults[key] = newValue
-		XCTAssertEqual(Defaults[key]?[0], newValue[0])
+		DefaultsEnum[key] = newValue
+		XCTAssertEqual(DefaultsEnum[key]?[0], newValue[0])
 	}
 
 	func testNestedKey() {
 		let defaultValue = ["Hank", "Chen"]
-		let key = Defaults.Key<[[String]]>("independentArrayNestedKey", default: [defaultValue])
-		XCTAssertEqual(Defaults[key][0][0], "Hank")
+		let key = DefaultsEnum.Key<[[String]]>("independentArrayNestedKey", default: [defaultValue])
+		XCTAssertEqual(DefaultsEnum[key][0][0], "Hank")
 		let newValue = ["Sindre", "Sorhus"]
-		Defaults[key][0] = newValue
-		Defaults[key].append(defaultValue)
-		XCTAssertEqual(Defaults[key][0][0], newValue[0])
-		XCTAssertEqual(Defaults[key][0][1], newValue[1])
-		XCTAssertEqual(Defaults[key][1][0], defaultValue[0])
-		XCTAssertEqual(Defaults[key][1][1], defaultValue[1])
+		DefaultsEnum[key][0] = newValue
+		DefaultsEnum[key].append(defaultValue)
+		XCTAssertEqual(DefaultsEnum[key][0][0], newValue[0])
+		XCTAssertEqual(DefaultsEnum[key][0][1], newValue[1])
+		XCTAssertEqual(DefaultsEnum[key][1][0], defaultValue[0])
+		XCTAssertEqual(DefaultsEnum[key][1][1], defaultValue[1])
 	}
 
 	func testDictionaryKey() {
 		let defaultValue = ["0": "HankChen"]
-		let key = Defaults.Key<[[String: String]]>("independentArrayDictionaryKey", default: [defaultValue])
-		XCTAssertEqual(Defaults[key][0]["0"], defaultValue["0"])
+		let key = DefaultsEnum.Key<[[String: String]]>("independentArrayDictionaryKey", default: [defaultValue])
+		XCTAssertEqual(DefaultsEnum[key][0]["0"], defaultValue["0"])
 		let newValue = ["0": "SindreSorhus"]
-		Defaults[key][0] = newValue
-		Defaults[key].append(defaultValue)
-		XCTAssertEqual(Defaults[key][0]["0"], newValue["0"])
-		XCTAssertEqual(Defaults[key][1]["0"], defaultValue["0"])
+		DefaultsEnum[key][0] = newValue
+		DefaultsEnum[key].append(defaultValue)
+		XCTAssertEqual(DefaultsEnum[key][0]["0"], newValue["0"])
+		XCTAssertEqual(DefaultsEnum[key][1]["0"], defaultValue["0"])
 	}
 
 	func testNestedDictionaryKey() {
 		let defaultValue = ["0": [["0": 0]]]
-		let key = Defaults.Key<[[String: [[String: Int]]]]>("independentArrayNestedDictionaryKey", default: [defaultValue])
-		XCTAssertEqual(Defaults[key][0]["0"]![0]["0"], 0)
+		let key = DefaultsEnum.Key<[[String: [[String: Int]]]]>("independentArrayNestedDictionaryKey", default: [defaultValue])
+		XCTAssertEqual(DefaultsEnum[key][0]["0"]![0]["0"], 0)
 		let newValue = 1
-		Defaults[key][0]["0"]![0]["0"] = newValue
-		Defaults[key].append(defaultValue)
-		XCTAssertEqual(Defaults[key][1]["0"]![0]["0"], 0)
-		XCTAssertEqual(Defaults[key][0]["0"]![0]["0"], newValue)
+		DefaultsEnum[key][0]["0"]![0]["0"] = newValue
+		DefaultsEnum[key].append(defaultValue)
+		XCTAssertEqual(DefaultsEnum[key][1]["0"]![0]["0"], 0)
+		XCTAssertEqual(DefaultsEnum[key][0]["0"]![0]["0"], newValue)
 	}
 
 	func testType() {
-		XCTAssertEqual(Defaults[.array][0], fixtureArray[0])
+		XCTAssertEqual(DefaultsEnum[.array][0], fixtureArray[0])
 		let newName = "Hank121314"
-		Defaults[.array][0] = newName
-		XCTAssertEqual(Defaults[.array][0], newName)
+		DefaultsEnum[.array][0] = newName
+		XCTAssertEqual(DefaultsEnum[.array][0], newName)
 	}
 
 	func testObserveKeyCombine() {
-		let key = Defaults.Key<[String]>("observeArrayKeyCombine", default: fixtureArray)
+		let key = DefaultsEnum.Key<[String]>("observeArrayKeyCombine", default: fixtureArray)
 		let newName = "Chen"
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(2)
@@ -100,19 +100,19 @@ final class DefaultsArrayTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key][0] = newName
-		Defaults.reset(key)
+		DefaultsEnum[key][0] = newName
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveOptionalKeyCombine() {
-		let key = Defaults.Key<[String]?>("observeArrayOptionalKeyCombine")
+		let key = DefaultsEnum.Key<[String]?>("observeArrayOptionalKeyCombine")
 		let newName = ["Chen"]
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(3)
@@ -129,46 +129,46 @@ final class DefaultsArrayTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key] = fixtureArray
-		Defaults[key] = newName
-		Defaults.reset(key)
+		DefaultsEnum[key] = fixtureArray
+		DefaultsEnum[key] = newName
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveKey() {
-		let key = Defaults.Key<[String]>("observeArrayKey", default: fixtureArray)
+		let key = DefaultsEnum.Key<[String]>("observeArrayKey", default: fixtureArray)
 		let newName = "John"
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertEqual(change.oldValue, fixtureArray)
 			XCTAssertEqual(change.newValue, [fixtureArray[0], newName])
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key][1] = newName
+		DefaultsEnum[key][1] = newName
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveOptionalKey() {
-		let key = Defaults.Key<[String]?>("observeArrayOptionalKey")
+		let key = DefaultsEnum.Key<[String]?>("observeArrayOptionalKey")
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertNil(change.oldValue)
 			XCTAssertEqual(change.newValue!, fixtureArray)
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key] = fixtureArray
+		DefaultsEnum[key] = fixtureArray
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)

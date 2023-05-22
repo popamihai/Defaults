@@ -1,6 +1,6 @@
 import Foundation
 
-extension Defaults {
+extension DefaultsEnum {
 	public enum Version: Int {
 		case v5 = 5
 	}
@@ -9,11 +9,11 @@ extension Defaults {
 	Migrate the given key's value from JSON string to `Value`.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let array = Key<Set<String>?>("array")
 	}
 
-	Defaults.migrate(.array, to: .v5)
+	DefaultsEnum.migrate(.array, to: .v5)
 	```
 	*/
 	public static func migrate<Value: Serializable & Codable>(_ keys: Key<Value>..., to version: Version) {

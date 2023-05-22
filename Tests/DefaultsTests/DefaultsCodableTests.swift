@@ -2,14 +2,14 @@ import Foundation
 import XCTest
 import Defaults
 
-private struct Unicorn: Codable, Defaults.Serializable {
+private struct Unicorn: Codable, DefaultsEnum.Serializable {
 	var isUnicorn: Bool
 }
 
 private let fixtureCodable = Unicorn(isUnicorn: true)
 
 @objc(UnicornCodableAndNSSecureCoding)
-private final class UnicornCodableAndNSSecureCoding: NSObject, NSSecureCoding, Codable, Defaults.Serializable {
+private final class UnicornCodableAndNSSecureCoding: NSObject, NSSecureCoding, Codable, DefaultsEnum.Serializable {
 	static let supportsSecureCoding = true
 
 	func encode(with coder: NSCoder) {}
@@ -22,7 +22,7 @@ private final class UnicornCodableAndNSSecureCoding: NSObject, NSSecureCoding, C
 }
 
 @objc(UnicornCodableAndPreferNSSecureCoding)
-private final class UnicornCodableAndPreferNSSecureCoding: NSObject, NSSecureCoding, Codable, Defaults.Serializable, Defaults.PreferNSSecureCoding {
+private final class UnicornCodableAndPreferNSSecureCoding: NSObject, NSSecureCoding, Codable, DefaultsEnum.Serializable, DefaultsEnum.PreferNSSecureCoding {
 	static let supportsSecureCoding = true
 
 	func encode(with coder: NSCoder) {}
@@ -34,7 +34,7 @@ private final class UnicornCodableAndPreferNSSecureCoding: NSObject, NSSecureCod
 	}
 }
 
-extension Defaults.Keys {
+extension DefaultsEnum.Keys {
 	fileprivate static let codable = Key<Unicorn>("codable", default: fixtureCodable)
 	fileprivate static let codableArray = Key<[Unicorn]>("codable", default: [fixtureCodable])
 	fileprivate static let codableDictionary = Key<[String: Unicorn]>("codable", default: ["0": fixtureCodable])
@@ -43,113 +43,113 @@ extension Defaults.Keys {
 final class DefaultsCodableTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	override func tearDown() {
 		super.tearDown()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	func testKey() {
-		let key = Defaults.Key<Unicorn>("independentCodableKey", default: fixtureCodable)
-		XCTAssertTrue(Defaults[key].isUnicorn)
-		Defaults[key].isUnicorn = false
-		XCTAssertFalse(Defaults[key].isUnicorn)
+		let key = DefaultsEnum.Key<Unicorn>("independentCodableKey", default: fixtureCodable)
+		XCTAssertTrue(DefaultsEnum[key].isUnicorn)
+		DefaultsEnum[key].isUnicorn = false
+		XCTAssertFalse(DefaultsEnum[key].isUnicorn)
 	}
 
 	func testOptionalKey() {
-		let key = Defaults.Key<Unicorn?>("independentCodableOptionalKey")
-		XCTAssertNil(Defaults[key])
-		Defaults[key] = Unicorn(isUnicorn: true)
-		XCTAssertTrue(Defaults[key]?.isUnicorn ?? false)
+		let key = DefaultsEnum.Key<Unicorn?>("independentCodableOptionalKey")
+		XCTAssertNil(DefaultsEnum[key])
+		DefaultsEnum[key] = Unicorn(isUnicorn: true)
+		XCTAssertTrue(DefaultsEnum[key]?.isUnicorn ?? false)
 	}
 
 	func testArrayKey() {
-		let key = Defaults.Key<[Unicorn]>("independentCodableArrayKey", default: [fixtureCodable])
-		XCTAssertTrue(Defaults[key][0].isUnicorn)
-		Defaults[key].append(Unicorn(isUnicorn: false))
-		XCTAssertTrue(Defaults[key][0].isUnicorn)
-		XCTAssertFalse(Defaults[key][1].isUnicorn)
+		let key = DefaultsEnum.Key<[Unicorn]>("independentCodableArrayKey", default: [fixtureCodable])
+		XCTAssertTrue(DefaultsEnum[key][0].isUnicorn)
+		DefaultsEnum[key].append(Unicorn(isUnicorn: false))
+		XCTAssertTrue(DefaultsEnum[key][0].isUnicorn)
+		XCTAssertFalse(DefaultsEnum[key][1].isUnicorn)
 	}
 
 	func testArrayOptionalKey() {
-		let key = Defaults.Key<[Unicorn]?>("independentCodableArrayOptionalKey")
-		XCTAssertNil(Defaults[key])
-		Defaults[key] = [fixtureCodable]
-		Defaults[key]?.append(Unicorn(isUnicorn: false))
-		XCTAssertTrue(Defaults[key]?[0].isUnicorn ?? false)
-		XCTAssertFalse(Defaults[key]?[1].isUnicorn ?? false)
+		let key = DefaultsEnum.Key<[Unicorn]?>("independentCodableArrayOptionalKey")
+		XCTAssertNil(DefaultsEnum[key])
+		DefaultsEnum[key] = [fixtureCodable]
+		DefaultsEnum[key]?.append(Unicorn(isUnicorn: false))
+		XCTAssertTrue(DefaultsEnum[key]?[0].isUnicorn ?? false)
+		XCTAssertFalse(DefaultsEnum[key]?[1].isUnicorn ?? false)
 	}
 
 	func testNestedArrayKey() {
-		let key = Defaults.Key<[[Unicorn]]>("independentCodableNestedArrayKey", default: [[fixtureCodable]])
-		XCTAssertTrue(Defaults[key][0][0].isUnicorn)
-		Defaults[key].append([fixtureCodable])
-		Defaults[key][0].append(Unicorn(isUnicorn: false))
-		XCTAssertTrue(Defaults[key][0][0].isUnicorn)
-		XCTAssertTrue(Defaults[key][1][0].isUnicorn)
-		XCTAssertFalse(Defaults[key][0][1].isUnicorn)
+		let key = DefaultsEnum.Key<[[Unicorn]]>("independentCodableNestedArrayKey", default: [[fixtureCodable]])
+		XCTAssertTrue(DefaultsEnum[key][0][0].isUnicorn)
+		DefaultsEnum[key].append([fixtureCodable])
+		DefaultsEnum[key][0].append(Unicorn(isUnicorn: false))
+		XCTAssertTrue(DefaultsEnum[key][0][0].isUnicorn)
+		XCTAssertTrue(DefaultsEnum[key][1][0].isUnicorn)
+		XCTAssertFalse(DefaultsEnum[key][0][1].isUnicorn)
 	}
 
 	func testArrayDictionaryKey() {
-		let key = Defaults.Key<[[String: Unicorn]]>("independentCodableArrayDictionaryKey", default: [["0": fixtureCodable]])
-		XCTAssertTrue(Defaults[key][0]["0"]?.isUnicorn ?? false)
-		Defaults[key].append(["0": fixtureCodable])
-		Defaults[key][0]["1"] = Unicorn(isUnicorn: false)
-		XCTAssertTrue(Defaults[key][0]["0"]?.isUnicorn ?? false)
-		XCTAssertTrue(Defaults[key][1]["0"]?.isUnicorn ?? false)
-		XCTAssertFalse(Defaults[key][0]["1"]?.isUnicorn ?? true)
+		let key = DefaultsEnum.Key<[[String: Unicorn]]>("independentCodableArrayDictionaryKey", default: [["0": fixtureCodable]])
+		XCTAssertTrue(DefaultsEnum[key][0]["0"]?.isUnicorn ?? false)
+		DefaultsEnum[key].append(["0": fixtureCodable])
+		DefaultsEnum[key][0]["1"] = Unicorn(isUnicorn: false)
+		XCTAssertTrue(DefaultsEnum[key][0]["0"]?.isUnicorn ?? false)
+		XCTAssertTrue(DefaultsEnum[key][1]["0"]?.isUnicorn ?? false)
+		XCTAssertFalse(DefaultsEnum[key][0]["1"]?.isUnicorn ?? true)
 	}
 
 	func testDictionaryKey() {
-		let key = Defaults.Key<[String: Unicorn]>("independentCodableDictionaryKey", default: ["0": fixtureCodable])
-		XCTAssertTrue(Defaults[key]["0"]?.isUnicorn ?? false)
-		Defaults[key]["1"] = Unicorn(isUnicorn: false)
-		XCTAssertTrue(Defaults[key]["0"]?.isUnicorn ?? false)
-		XCTAssertFalse(Defaults[key]["1"]?.isUnicorn ?? true)
+		let key = DefaultsEnum.Key<[String: Unicorn]>("independentCodableDictionaryKey", default: ["0": fixtureCodable])
+		XCTAssertTrue(DefaultsEnum[key]["0"]?.isUnicorn ?? false)
+		DefaultsEnum[key]["1"] = Unicorn(isUnicorn: false)
+		XCTAssertTrue(DefaultsEnum[key]["0"]?.isUnicorn ?? false)
+		XCTAssertFalse(DefaultsEnum[key]["1"]?.isUnicorn ?? true)
 	}
 
 	func testDictionaryOptionalKey() {
-		let key = Defaults.Key<[String: Unicorn]?>("independentCodableDictionaryOptionalKey")
-		XCTAssertNil(Defaults[key])
-		Defaults[key] = ["0": fixtureCodable]
-		Defaults[key]?["1"] = Unicorn(isUnicorn: false)
-		XCTAssertTrue(Defaults[key]?["0"]?.isUnicorn ?? false)
-		XCTAssertFalse(Defaults[key]?["1"]?.isUnicorn ?? true)
+		let key = DefaultsEnum.Key<[String: Unicorn]?>("independentCodableDictionaryOptionalKey")
+		XCTAssertNil(DefaultsEnum[key])
+		DefaultsEnum[key] = ["0": fixtureCodable]
+		DefaultsEnum[key]?["1"] = Unicorn(isUnicorn: false)
+		XCTAssertTrue(DefaultsEnum[key]?["0"]?.isUnicorn ?? false)
+		XCTAssertFalse(DefaultsEnum[key]?["1"]?.isUnicorn ?? true)
 	}
 
 	func testDictionaryArrayKey() {
-		let key = Defaults.Key<[String: [Unicorn]]>("independentCodableDictionaryArrayKey", default: ["0": [fixtureCodable]])
-		XCTAssertTrue(Defaults[key]["0"]?[0].isUnicorn ?? false)
-		Defaults[key]["1"] = [fixtureCodable]
-		Defaults[key]["0"]?.append(Unicorn(isUnicorn: false))
-		XCTAssertTrue(Defaults[key]["1"]?[0].isUnicorn ?? false)
-		XCTAssertFalse(Defaults[key]["0"]?[1].isUnicorn ?? true)
+		let key = DefaultsEnum.Key<[String: [Unicorn]]>("independentCodableDictionaryArrayKey", default: ["0": [fixtureCodable]])
+		XCTAssertTrue(DefaultsEnum[key]["0"]?[0].isUnicorn ?? false)
+		DefaultsEnum[key]["1"] = [fixtureCodable]
+		DefaultsEnum[key]["0"]?.append(Unicorn(isUnicorn: false))
+		XCTAssertTrue(DefaultsEnum[key]["1"]?[0].isUnicorn ?? false)
+		XCTAssertFalse(DefaultsEnum[key]["0"]?[1].isUnicorn ?? true)
 	}
 
 	func testType() {
-		XCTAssertTrue(Defaults[.codable].isUnicorn)
-		Defaults[.codable] = Unicorn(isUnicorn: false)
-		XCTAssertFalse(Defaults[.codable].isUnicorn)
+		XCTAssertTrue(DefaultsEnum[.codable].isUnicorn)
+		DefaultsEnum[.codable] = Unicorn(isUnicorn: false)
+		XCTAssertFalse(DefaultsEnum[.codable].isUnicorn)
 	}
 
 	func testArrayType() {
-		XCTAssertTrue(Defaults[.codableArray][0].isUnicorn)
-		Defaults[.codableArray][0] = Unicorn(isUnicorn: false)
-		XCTAssertFalse(Defaults[.codableArray][0].isUnicorn)
+		XCTAssertTrue(DefaultsEnum[.codableArray][0].isUnicorn)
+		DefaultsEnum[.codableArray][0] = Unicorn(isUnicorn: false)
+		XCTAssertFalse(DefaultsEnum[.codableArray][0].isUnicorn)
 	}
 
 	func testDictionaryType() {
-		XCTAssertTrue(Defaults[.codableDictionary]["0"]?.isUnicorn ?? false)
-		Defaults[.codableDictionary]["0"] = Unicorn(isUnicorn: false)
-		XCTAssertFalse(Defaults[.codableDictionary]["0"]?.isUnicorn ?? true)
+		XCTAssertTrue(DefaultsEnum[.codableDictionary]["0"]?.isUnicorn ?? false)
+		DefaultsEnum[.codableDictionary]["0"] = Unicorn(isUnicorn: false)
+		XCTAssertFalse(DefaultsEnum[.codableDictionary]["0"]?.isUnicorn ?? true)
 	}
 
 	func testCodableAndNSSecureCoding() {
 		let fixture = UnicornCodableAndNSSecureCoding()
 		let keyName = "testCodableAndNSSecureCoding"
-		_ = Defaults.Key<UnicornCodableAndNSSecureCoding>(keyName, default: fixture)
+		_ = DefaultsEnum.Key<UnicornCodableAndNSSecureCoding>(keyName, default: fixture)
 		XCTAssertNil(UserDefaults.standard.data(forKey: keyName))
 		XCTAssertNotNil(UserDefaults.standard.string(forKey: keyName))
 	}
@@ -157,16 +157,16 @@ final class DefaultsCodableTests: XCTestCase {
 	func testCodableAndPreferNSSecureCoding() {
 		let fixture = UnicornCodableAndPreferNSSecureCoding()
 		let keyName = "testCodableAndPreferNSSecureCoding"
-		_ = Defaults.Key<UnicornCodableAndPreferNSSecureCoding>(keyName, default: fixture)
+		_ = DefaultsEnum.Key<UnicornCodableAndPreferNSSecureCoding>(keyName, default: fixture)
 		XCTAssertNil(UserDefaults.standard.string(forKey: keyName))
 		XCTAssertNotNil(UserDefaults.standard.data(forKey: keyName))
 	}
 
 	func testObserveKeyCombine() {
-		let key = Defaults.Key<Unicorn>("observeCodableKeyCombine", default: fixtureCodable)
+		let key = DefaultsEnum.Key<Unicorn>("observeCodableKeyCombine", default: fixtureCodable)
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue.isUnicorn, $0.newValue.isUnicorn) }
 			.collect(2)
@@ -180,18 +180,18 @@ final class DefaultsCodableTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key] = Unicorn(isUnicorn: false)
-		Defaults.reset(key)
+		DefaultsEnum[key] = Unicorn(isUnicorn: false)
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveOptionalKeyCombine() {
-		let key = Defaults.Key<Unicorn?>("observeCodableOptionalKeyCombine")
+		let key = DefaultsEnum.Key<Unicorn?>("observeCodableOptionalKeyCombine")
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue?.isUnicorn, $0.newValue?.isUnicorn) }
 			.collect(2)
@@ -207,18 +207,18 @@ final class DefaultsCodableTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key] = fixtureCodable
-		Defaults.reset(key)
+		DefaultsEnum[key] = fixtureCodable
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveArrayKeyCombine() {
-		let key = Defaults.Key<[Unicorn]>("observeCodableArrayKeyCombine", default: [fixtureCodable])
+		let key = DefaultsEnum.Key<[Unicorn]>("observeCodableArrayKeyCombine", default: [fixtureCodable])
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(2)
@@ -232,18 +232,18 @@ final class DefaultsCodableTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key][0] = Unicorn(isUnicorn: false)
-		Defaults.reset(key)
+		DefaultsEnum[key][0] = Unicorn(isUnicorn: false)
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveDictionaryKeyCombine() {
-		let key = Defaults.Key<[String: Unicorn]>("observeCodableDictionaryKeyCombine", default: ["0": fixtureCodable])
+		let key = DefaultsEnum.Key<[String: Unicorn]>("observeCodableDictionaryKeyCombine", default: ["0": fixtureCodable])
 		let expect = expectation(description: "Observation closure being called")
 
-		let publisher = Defaults
+		let publisher = DefaultsEnum
 			.publisher(key, options: [])
 			.map { ($0.oldValue, $0.newValue) }
 			.collect(2)
@@ -257,80 +257,80 @@ final class DefaultsCodableTests: XCTestCase {
 			expect.fulfill()
 		}
 
-		Defaults[key]["0"] = Unicorn(isUnicorn: false)
-		Defaults.reset(key)
+		DefaultsEnum[key]["0"] = Unicorn(isUnicorn: false)
+		DefaultsEnum.reset(key)
 		cancellable.cancel()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveKey() {
-		let key = Defaults.Key<Unicorn>("observeCodableKey", default: fixtureCodable)
+		let key = DefaultsEnum.Key<Unicorn>("observeCodableKey", default: fixtureCodable)
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertTrue(change.oldValue.isUnicorn)
 			XCTAssertFalse(change.newValue.isUnicorn)
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key] = Unicorn(isUnicorn: false)
+		DefaultsEnum[key] = Unicorn(isUnicorn: false)
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveOptionalKey() {
-		let key = Defaults.Key<Unicorn?>("observeCodableOptionalKey")
+		let key = DefaultsEnum.Key<Unicorn?>("observeCodableOptionalKey")
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertNil(change.oldValue)
 			XCTAssertTrue(change.newValue?.isUnicorn ?? false)
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key] = fixtureCodable
+		DefaultsEnum[key] = fixtureCodable
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveArrayKey() {
-		let key = Defaults.Key<[Unicorn]>("observeCodableArrayKey", default: [fixtureCodable])
+		let key = DefaultsEnum.Key<[Unicorn]>("observeCodableArrayKey", default: [fixtureCodable])
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertTrue(change.oldValue[0].isUnicorn)
 			XCTAssertFalse(change.newValue[0].isUnicorn)
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key][0] = Unicorn(isUnicorn: false)
+		DefaultsEnum[key][0] = Unicorn(isUnicorn: false)
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)
 	}
 
 	func testObserveDictionaryKey() {
-		let key = Defaults.Key<[String: Unicorn]>("observeCodableDictionaryKey", default: ["0": fixtureCodable])
+		let key = DefaultsEnum.Key<[String: Unicorn]>("observeCodableDictionaryKey", default: ["0": fixtureCodable])
 		let expect = expectation(description: "Observation closure being called")
 
-		var observation: Defaults.Observation!
-		observation = Defaults.observe(key, options: []) { change in
+		var observation: DefaultsEnum.Observation!
+		observation = DefaultsEnum.observe(key, options: []) { change in
 			XCTAssertTrue(change.oldValue["0"]?.isUnicorn ?? false)
 			XCTAssertFalse(change.newValue["0"]?.isUnicorn ?? true)
 			observation.invalidate()
 			expect.fulfill()
 		}
 
-		Defaults[key]["0"] = Unicorn(isUnicorn: false)
+		DefaultsEnum[key]["0"] = Unicorn(isUnicorn: false)
 		observation.invalidate()
 
 		waitForExpectations(timeout: 10)

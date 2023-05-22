@@ -1,29 +1,29 @@
 // MIT License © Sindre Sorhus
 import Foundation
 
-public enum Defaults {
+public enum DefaultsEnum {
 	/**
 	Access stored values.
 
 	```swift
 	import Defaults
 
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 	 static let quality = Key<Double>("quality", default: 0.8)
 	}
 
 	// …
 
-	Defaults[.quality]
+	DefaultsEnum[.quality]
 	//=> 0.8
 
-	Defaults[.quality] = 0.5
+	DefaultsEnum[.quality] = 0.5
 	//=> 0.5
 
-	Defaults[.quality] += 0.1
+	DefaultsEnum[.quality] += 0.1
 	//=> 0.6
 
-	Defaults[.quality] = "🦄"
+	DefaultsEnum[.quality] = "🦄"
 	//=> [Cannot assign value of type 'String' to type 'Double']
 	```
 	*/
@@ -35,16 +35,16 @@ public enum Defaults {
 	}
 }
 
-public typealias _Defaults = Defaults
+public typealias _Defaults = DefaultsEnum
 public typealias _Default = Default
 
-extension Defaults {
+extension DefaultsEnum {
 	// We cannot use `Key` as the container for keys because of "Static stored properties not supported in generic types".
 	/**
 	Type-erased key.
 	*/
 	public class _AnyKey {
-		public typealias Key = Defaults.Key
+		public typealias Key = DefaultsEnum.Key
 
 		public let name: String
 		public let suite: UserDefaults
@@ -69,7 +69,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
 	Strongly-typed key used to access values.
 
@@ -78,7 +78,7 @@ extension Defaults {
 	```swift
 	import Defaults
 
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let quality = Key<Double>("quality", default: 0.8)
 		//            ^            ^         ^                ^
 		//           Key          Type   UserDefaults name   Default value
@@ -134,7 +134,7 @@ extension Defaults {
 		This can be useful in cases where you cannot define a static default value as it may change during the lifetime of the app.
 
 		```swift
-		extension Defaults.Keys {
+		extension DefaultsEnum.Keys {
 			static let camera = Key<AVCaptureDevice?>("camera") { .default(for: .video) }
 		}
 		```
@@ -156,7 +156,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults.Key {
+extension DefaultsEnum.Key {
 	// We cannot declare this convenience initializer in class directly because of "@_transparent' attribute is not supported on declarations within classes".
 	/**
 	Create a key with an optional value.
@@ -172,7 +172,7 @@ extension Defaults.Key {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
 	Remove all entries from the given `UserDefaults` suite.
 
@@ -183,27 +183,27 @@ extension Defaults {
 	}
 }
 
-extension Defaults._AnyKey: Equatable {
-	public static func == (lhs: Defaults._AnyKey, rhs: Defaults._AnyKey) -> Bool {
+extension DefaultsEnum._AnyKey: Equatable {
+	public static func == (lhs: DefaultsEnum._AnyKey, rhs: DefaultsEnum._AnyKey) -> Bool {
 		lhs.name == rhs.name
 			&& lhs.suite == rhs.suite
 	}
 }
 
-extension Defaults._AnyKey: Hashable {
+extension DefaultsEnum._AnyKey: Hashable {
 	public func hash(into hasher: inout Hasher) {
 		hasher.combine(name)
 		hasher.combine(suite)
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public typealias Keys = _AnyKey
 
 	/**
-	Types that conform to this protocol can be used with `Defaults`.
+	Types that conform to this protocol can be used with `DefaultsEnum`.
 
-	The type should have a static variable `bridge` which should reference an instance of a type that conforms to `Defaults.Bridge`.
+	The type should have a static variable `bridge` which should reference an instance of a type that conforms to `DefaultsEnum.Bridge`.
 
 	```swift
 	struct User {
@@ -211,7 +211,7 @@ extension Defaults {
 		password: String
 	}
 
-	extension User: Defaults.Serializable {
+	extension User: DefaultsEnum.Serializable {
 		static let bridge = UserBridge()
 	}
 	```
@@ -225,14 +225,14 @@ extension Defaults {
 	Ambiguous bridge selector protocol that lets you select your preferred bridge when there are multiple possibilities.
 
 	```swift
-	enum Interval: Int, Codable, Defaults.Serializable, Defaults.PreferRawRepresentable {
+	enum Interval: Int, Codable, DefaultsEnum.Serializable, DefaultsEnum.PreferRawRepresentable {
 		case tenMinutes = 10
 		case halfHour = 30
 		case oneHour = 60
 	}
 	```
 
-	By default, if an `enum` conforms to `Codable` and `Defaults.Serializable`, it will use the `CodableBridge`, but by conforming to `Defaults.PreferRawRepresentable`, we can switch the bridge back to `RawRepresentableBridge`.
+	By default, if an `enum` conforms to `Codable` and `DefaultsEnum.Serializable`, it will use the `CodableBridge`, but by conforming to `DefaultsEnum.PreferRawRepresentable`, we can switch the bridge back to `RawRepresentableBridge`.
 	*/
 	public typealias PreferRawRepresentable = _DefaultsPreferRawRepresentable
 
@@ -261,7 +261,7 @@ extension Defaults {
 		static let bridge = UserBridge()
 	}
 
-	struct UserBridge: Defaults.Bridge {
+	struct UserBridge: DefaultsEnum.Bridge {
 		typealias Value = User
 		typealias Serializable = [String: String]
 
@@ -303,21 +303,21 @@ extension Defaults {
 	typealias CodableBridge = _DefaultsCodableBridge
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
 	Observe updates to a stored value.
 
 	- Parameter initial: Trigger an initial event on creation. This can be useful for setting default values on controls.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let isUnicornMode = Key<Bool>("isUnicornMode", default: false)
 	}
 
 	// …
 
 	Task {
-		for await value in Defaults.updates(.isUnicornMode) {
+		for await value in DefaultsEnum.updates(.isUnicornMode) {
 			print("Value:", value)
 		}
 	}
@@ -350,13 +350,13 @@ extension Defaults {
 
 	```swift
 	Task {
-		for await _ in Defaults.updates([.foo, .bar]) {
+		for await _ in DefaultsEnum.updates([.foo, .bar]) {
 			print("One of the values changed")
 		}
 	}
 	```
 
-	- Note: This does not include which of the values changed. Use ``Defaults/updates(_:initial:)-9eh8`` if you need that. You could use [`merge`](https://github.com/apple/swift-async-algorithms/blob/main/Sources/AsyncAlgorithms/AsyncAlgorithms.docc/Guides/Merge.md) to merge them into a single sequence.
+	- Note: This does not include which of the values changed. Use ``DefaultsEnum/updates(_:initial:)-9eh8`` if you need that. You could use [`merge`](https://github.com/apple/swift-async-algorithms/blob/main/Sources/AsyncAlgorithms/AsyncAlgorithms.docc/Guides/Merge.md) to merge them into a single sequence.
 	*/
 	public static func updates(
 		_ keys: [_AnyKey],

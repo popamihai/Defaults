@@ -5,7 +5,7 @@ import AppKit
 import UIKit
 #endif
 
-extension Defaults.CodableBridge {
+extension DefaultsEnum.CodableBridge {
 	public func serialize(_ value: Value?) -> Serializable? {
 		guard let value else {
 			return nil
@@ -33,33 +33,33 @@ extension Defaults.CodableBridge {
 }
 
 /**
-Any `Value` that conforms to `Codable` and `Defaults.Serializable` will use `CodableBridge` to do the serialization and deserialization.
+Any `Value` that conforms to `Codable` and `DefaultsEnum.Serializable` will use `CodableBridge` to do the serialization and deserialization.
 */
-extension Defaults {
+extension DefaultsEnum {
 	public struct TopLevelCodableBridge<Value: Codable>: CodableBridge {}
 }
 
 /**
-`RawRepresentableCodableBridge` is needed because, for example, with `enum SomeEnum: String, Codable, Defaults.Serializable`, the compiler will be confused between `RawRepresentableBridge` and `TopLevelCodableBridge`.
+`RawRepresentableCodableBridge` is needed because, for example, with `enum SomeEnum: String, Codable, DefaultsEnum.Serializable`, the compiler will be confused between `RawRepresentableBridge` and `TopLevelCodableBridge`.
 */
-extension Defaults {
+extension DefaultsEnum {
 	public struct RawRepresentableCodableBridge<Value: RawRepresentable & Codable>: CodableBridge {}
 }
 
 /**
 This exists to avoid compiler ambiguity.
 */
-extension Defaults {
+extension DefaultsEnum {
 	public struct CodableNSSecureCodingBridge<Value: Codable & NSSecureCoding & NSObject>: CodableBridge {}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct URLBridge: CodableBridge {
 		public typealias Value = URL
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct RawRepresentableBridge<Value: RawRepresentable>: Bridge {
 		public typealias Value = Value
 		public typealias Serializable = Value.RawValue
@@ -78,7 +78,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct NSSecureCodingBridge<Value: NSSecureCoding & NSObject>: Bridge {
 		public typealias Value = Value
 		public typealias Serializable = Data
@@ -106,7 +106,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct OptionalBridge<Wrapped: Serializable>: Bridge {
 		public typealias Value = Wrapped.Value
 		public typealias Serializable = Wrapped.Serializable
@@ -121,7 +121,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct ArrayBridge<Element: Serializable>: Bridge {
 		public typealias Value = [Element]
 		public typealias Serializable = [Element.Serializable]
@@ -144,7 +144,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct DictionaryBridge<Key: LosslessStringConvertible & Hashable, Element: Serializable>: Bridge {
 		public typealias Value = [Key: Element.Value]
 		public typealias Serializable = [String: Element.Serializable]
@@ -178,9 +178,9 @@ extension Defaults {
 }
 
 /**
-We need both `SetBridge` and `SetAlgebraBridge` because `Set` conforms to `Sequence` but `SetAlgebra` does not. `Set` conforms to `Sequence`, so we can convert it into an array with `Array.init<S>(S)` and store it in the `UserDefaults`. But `SetAlgebra` does not, so it is hard to convert it into an array. Thats why we need the `Defaults.SetAlgebraSerializable` protocol to convert it into an array.
+We need both `SetBridge` and `SetAlgebraBridge` because `Set` conforms to `Sequence` but `SetAlgebra` does not. `Set` conforms to `Sequence`, so we can convert it into an array with `Array.init<S>(S)` and store it in the `UserDefaults`. But `SetAlgebra` does not, so it is hard to convert it into an array. Thats why we need the `DefaultsEnum.SetAlgebraSerializable` protocol to convert it into an array.
 */
-extension Defaults {
+extension DefaultsEnum {
 	public struct SetBridge<Element: Serializable & Hashable>: Bridge {
 		public typealias Value = Set<Element>
 		public typealias Serializable = Any
@@ -218,7 +218,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct SetAlgebraBridge<Value: SetAlgebraSerializable>: Bridge where Value.Element: Serializable {
 		public typealias Value = Value
 		public typealias Element = Value.Element
@@ -257,7 +257,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct CollectionBridge<Value: CollectionSerializable>: Bridge where Value.Element: Serializable {
 		public typealias Value = Value
 		public typealias Element = Value.Element
@@ -296,7 +296,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct UUIDBridge: Bridge {
 		public typealias Value = UUID
 		public typealias Serializable = String
@@ -315,7 +315,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	public struct RangeBridge<T: RangeSerializable>: Bridge {
 		public typealias Value = T
 		public typealias Serializable = [Any]
@@ -368,7 +368,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
 	The bridge which is responsible for `SwiftUI.Color` serialization and deserialization.
 
@@ -429,9 +429,9 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
-	public struct AnyBridge: Defaults.Bridge {
-		public typealias Value = Defaults.AnySerializable
+extension DefaultsEnum {
+	public struct AnyBridge: DefaultsEnum.Bridge {
+		public typealias Value = DefaultsEnum.AnySerializable
 		public typealias Serializable = Any
 
 		public func deserialize(_ object: Serializable?) -> Value? {

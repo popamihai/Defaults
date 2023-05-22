@@ -1,218 +1,218 @@
 import Foundation
 import CoreGraphics
 
-extension Defaults {
+extension DefaultsEnum {
 	public typealias NativeType = _DefaultsNativeType
 	public typealias CodableType = _DefaultsCodableType
 }
 
-extension Data: Defaults.NativeType {
+extension Data: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Data: Defaults.CodableType {
+extension Data: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Date: Defaults.NativeType {
+extension Date: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Date: Defaults.CodableType {
+extension Date: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Bool: Defaults.NativeType {
+extension Bool: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Bool: Defaults.CodableType {
+extension Bool: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Int: Defaults.NativeType {
+extension Int: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Int: Defaults.CodableType {
+extension Int: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension UInt: Defaults.NativeType {
+extension UInt: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension UInt: Defaults.CodableType {
+extension UInt: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Double: Defaults.NativeType {
+extension Double: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Double: Defaults.CodableType {
+extension Double: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Float: Defaults.NativeType {
+extension Float: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Float: Defaults.CodableType {
+extension Float: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension String: Defaults.NativeType {
+extension String: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension String: Defaults.CodableType {
+extension String: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension CGFloat: Defaults.NativeType {
+extension CGFloat: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension CGFloat: Defaults.CodableType {
+extension CGFloat: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Int8: Defaults.NativeType {
+extension Int8: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Int8: Defaults.CodableType {
+extension Int8: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension UInt8: Defaults.NativeType {
+extension UInt8: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension UInt8: Defaults.CodableType {
+extension UInt8: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Int16: Defaults.NativeType {
+extension Int16: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Int16: Defaults.CodableType {
+extension Int16: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension UInt16: Defaults.NativeType {
+extension UInt16: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension UInt16: Defaults.CodableType {
+extension UInt16: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Int32: Defaults.NativeType {
+extension Int32: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Int32: Defaults.CodableType {
+extension Int32: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension UInt32: Defaults.NativeType {
+extension UInt32: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension UInt32: Defaults.CodableType {
+extension UInt32: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Int64: Defaults.NativeType {
+extension Int64: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension Int64: Defaults.CodableType {
+extension Int64: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension UInt64: Defaults.NativeType {
+extension UInt64: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension UInt64: Defaults.CodableType {
+extension UInt64: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension URL: Defaults.NativeType {
+extension URL: DefaultsEnum.NativeType {
 	public typealias CodableForm = Self
 }
 
-extension URL: Defaults.CodableType {
+extension URL: DefaultsEnum.CodableType {
 	public typealias NativeForm = Self
 
 	public func toNative() -> Self { self }
 }
 
-extension Optional: Defaults.NativeType where Wrapped: Defaults.NativeType {
+extension Optional: DefaultsEnum.NativeType where Wrapped: DefaultsEnum.NativeType {
 	public typealias CodableForm = Wrapped.CodableForm
 }
 
-extension Defaults.CollectionSerializable where Self: Defaults.NativeType, Element: Defaults.NativeType {
+extension DefaultsEnum.CollectionSerializable where Self: DefaultsEnum.NativeType, Element: DefaultsEnum.NativeType {
 	public typealias CodableForm = [Element.CodableForm]
 }
 
-extension Defaults.SetAlgebraSerializable where Self: Defaults.NativeType, Element: Defaults.NativeType {
+extension DefaultsEnum.SetAlgebraSerializable where Self: DefaultsEnum.NativeType, Element: DefaultsEnum.NativeType {
 	public typealias CodableForm = [Element.CodableForm]
 }
 
-extension Defaults.CodableType where Self: RawRepresentable<NativeForm.RawValue>, NativeForm: RawRepresentable {
+extension DefaultsEnum.CodableType where Self: RawRepresentable<NativeForm.RawValue>, NativeForm: RawRepresentable {
 	public func toNative() -> NativeForm {
 		NativeForm(rawValue: rawValue)!
 	}
 }
 
-extension Set: Defaults.NativeType where Element: Defaults.NativeType {
+extension Set: DefaultsEnum.NativeType where Element: DefaultsEnum.NativeType {
 	public typealias CodableForm = [Element.CodableForm]
 }
 
-extension Array: Defaults.NativeType where Element: Defaults.NativeType {
+extension Array: DefaultsEnum.NativeType where Element: DefaultsEnum.NativeType {
 	public typealias CodableForm = [Element.CodableForm]
 }
 
-extension Array: Defaults.CodableType where Element: Defaults.CodableType {
+extension Array: DefaultsEnum.CodableType where Element: DefaultsEnum.CodableType {
 	public typealias NativeForm = [Element.NativeForm]
 
 	public func toNative() -> NativeForm {
@@ -220,11 +220,11 @@ extension Array: Defaults.CodableType where Element: Defaults.CodableType {
 	}
 }
 
-extension Dictionary: Defaults.NativeType where Key: LosslessStringConvertible & Hashable, Value: Defaults.NativeType {
+extension Dictionary: DefaultsEnum.NativeType where Key: LosslessStringConvertible & Hashable, Value: DefaultsEnum.NativeType {
 	public typealias CodableForm = [String: Value.CodableForm]
 }
 
-extension Dictionary: Defaults.CodableType where Key == String, Value: Defaults.CodableType {
+extension Dictionary: DefaultsEnum.CodableType where Key == String, Value: DefaultsEnum.CodableType {
 	public typealias NativeForm = [String: Value.NativeForm]
 
 	public func toNative() -> NativeForm {

@@ -6,19 +6,19 @@ import XCTest
 final class DefaultsColorTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	override func tearDown() {
 		super.tearDown()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	func testPreservesColorSpace() {
 		let fixture = Color(.displayP3, red: 1, green: 0.3, blue: 0.7, opacity: 1)
-		let key = Defaults.Key<Color?>("independentColorPreservesColorSpaceKey")
-		Defaults[key] = fixture
-		XCTAssertEqual(Defaults[key]?.cgColor?.colorSpace, fixture.cgColor?.colorSpace)
-		XCTAssertEqual(Defaults[key]?.cgColor, fixture.cgColor)
+		let key = DefaultsEnum.Key<Color?>("independentColorPreservesColorSpaceKey")
+		DefaultsEnum[key] = fixture
+		XCTAssertEqual(DefaultsEnum[key]?.cgColor?.colorSpace, fixture.cgColor?.colorSpace)
+		XCTAssertEqual(DefaultsEnum[key]?.cgColor, fixture.cgColor)
 	}
 }

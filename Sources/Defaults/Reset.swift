@@ -1,26 +1,26 @@
 import Foundation
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
 	Reset the given string keys back to their default values.
 
-	Prefer using the strongly-typed keys instead whenever possible. This method can be useful if you need to store some keys in a collection, as it's not possible to store `Defaults.Key` in a collection because it's generic.
+	Prefer using the strongly-typed keys instead whenever possible. This method can be useful if you need to store some keys in a collection, as it's not possible to store `DefaultsEnum.Key` in a collection because it's generic.
 
 	- Parameter keys: String keys to reset.
 	- Parameter suite: `UserDefaults` suite.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let isUnicornMode = Key<Bool>("isUnicornMode", default: false)
 	}
 
-	Defaults[.isUnicornMode] = true
+	DefaultsEnum[.isUnicornMode] = true
 	//=> true
 
-	Defaults.reset(Defaults.Keys.isUnicornMode.name)
-	// Or `Defaults.reset("isUnicornMode")`
+	DefaultsEnum.reset(DefaultsEnum.Keys.isUnicornMode.name)
+	// Or `DefaultsEnum.reset("isUnicornMode")`
 
-	Defaults[.isUnicornMode]
+	DefaultsEnum[.isUnicornMode]
 	//=> false
 	```
 	*/
@@ -31,23 +31,23 @@ extension Defaults {
 	/**
 	Reset the given string keys back to their default values.
 
-	Prefer using the strongly-typed keys instead whenever possible. This method can be useful if you need to store some keys in a collection, as it's not possible to store `Defaults.Key` in a collection because it's generic.
+	Prefer using the strongly-typed keys instead whenever possible. This method can be useful if you need to store some keys in a collection, as it's not possible to store `DefaultsEnum.Key` in a collection because it's generic.
 
 	- Parameter keys: String keys to reset.
 	- Parameter suite: `UserDefaults` suite.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let isUnicornMode = Key<Bool>("isUnicornMode", default: false)
 	}
 
-	Defaults[.isUnicornMode] = true
+	DefaultsEnum[.isUnicornMode] = true
 	//=> true
 
-	Defaults.reset([Defaults.Keys.isUnicornMode.name])
-	// Or `Defaults.reset(["isUnicornMode"])`
+	DefaultsEnum.reset([DefaultsEnum.Keys.isUnicornMode.name])
+	// Or `DefaultsEnum.reset(["isUnicornMode"])`
 
-	Defaults[.isUnicornMode]
+	DefaultsEnum[.isUnicornMode]
 	//=> false
 	```
 	*/
@@ -58,21 +58,21 @@ extension Defaults {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
 	Reset the given keys back to their default values.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let isUnicornMode = Key<Bool>("isUnicornMode", default: false)
 	}
 
-	Defaults[.isUnicornMode] = true
+	DefaultsEnum[.isUnicornMode] = true
 	//=> true
 
-	Defaults.reset(.isUnicornMode)
+	DefaultsEnum.reset(.isUnicornMode)
 
-	Defaults[.isUnicornMode]
+	DefaultsEnum[.isUnicornMode]
 	//=> false
 	```
 	*/
@@ -84,16 +84,16 @@ extension Defaults {
 	Reset the given keys back to their default values.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let isUnicornMode = Key<Bool>("isUnicornMode", default: false)
 	}
 
-	Defaults[.isUnicornMode] = true
+	DefaultsEnum[.isUnicornMode] = true
 	//=> true
 
-	Defaults.reset(.isUnicornMode)
+	DefaultsEnum.reset(.isUnicornMode)
 
-	Defaults[.isUnicornMode]
+	DefaultsEnum[.isUnicornMode]
 	//=> false
 	```
 	*/

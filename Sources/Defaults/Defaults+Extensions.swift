@@ -5,162 +5,162 @@ import AppKit
 import UIKit
 #endif
 
-extension Defaults.Serializable {
+extension DefaultsEnum.Serializable {
 	public static var isNativelySupportedType: Bool { false }
 }
 
-extension Data: Defaults.Serializable {
+extension Data: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Date: Defaults.Serializable {
+extension Date: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Bool: Defaults.Serializable {
+extension Bool: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Int: Defaults.Serializable {
+extension Int: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension UInt: Defaults.Serializable {
+extension UInt: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Double: Defaults.Serializable {
+extension Double: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Float: Defaults.Serializable {
+extension Float: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension String: Defaults.Serializable {
+extension String: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension CGFloat: Defaults.Serializable {
+extension CGFloat: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Int8: Defaults.Serializable {
+extension Int8: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension UInt8: Defaults.Serializable {
+extension UInt8: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Int16: Defaults.Serializable {
+extension Int16: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension UInt16: Defaults.Serializable {
+extension UInt16: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Int32: Defaults.Serializable {
+extension Int32: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension UInt32: Defaults.Serializable {
+extension UInt32: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension Int64: Defaults.Serializable {
+extension Int64: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension UInt64: Defaults.Serializable {
+extension UInt64: DefaultsEnum.Serializable {
 	public static let isNativelySupportedType = true
 }
 
-extension URL: Defaults.Serializable {
-	public static let bridge = Defaults.URLBridge()
+extension URL: DefaultsEnum.Serializable {
+	public static let bridge = DefaultsEnum.URLBridge()
 }
 
-extension Defaults.Serializable where Self: Codable {
-	public static var bridge: Defaults.TopLevelCodableBridge<Self> { Defaults.TopLevelCodableBridge() }
+extension DefaultsEnum.Serializable where Self: Codable {
+	public static var bridge: DefaultsEnum.TopLevelCodableBridge<Self> { DefaultsEnum.TopLevelCodableBridge() }
 }
 
-extension Defaults.Serializable where Self: Codable & NSSecureCoding & NSObject {
-	public static var bridge: Defaults.CodableNSSecureCodingBridge<Self> { Defaults.CodableNSSecureCodingBridge() }
+extension DefaultsEnum.Serializable where Self: Codable & NSSecureCoding & NSObject {
+	public static var bridge: DefaultsEnum.CodableNSSecureCodingBridge<Self> { DefaultsEnum.CodableNSSecureCodingBridge() }
 }
 
-extension Defaults.Serializable where Self: Codable & NSSecureCoding & NSObject & Defaults.PreferNSSecureCoding {
-	public static var bridge: Defaults.NSSecureCodingBridge<Self> { Defaults.NSSecureCodingBridge() }
+extension DefaultsEnum.Serializable where Self: Codable & NSSecureCoding & NSObject & DefaultsEnum.PreferNSSecureCoding {
+	public static var bridge: DefaultsEnum.NSSecureCodingBridge<Self> { DefaultsEnum.NSSecureCodingBridge() }
 }
 
-extension Defaults.Serializable where Self: Codable & RawRepresentable {
-	public static var bridge: Defaults.RawRepresentableCodableBridge<Self> { Defaults.RawRepresentableCodableBridge() }
+extension DefaultsEnum.Serializable where Self: Codable & RawRepresentable {
+	public static var bridge: DefaultsEnum.RawRepresentableCodableBridge<Self> { DefaultsEnum.RawRepresentableCodableBridge() }
 }
 
-extension Defaults.Serializable where Self: Codable & RawRepresentable & Defaults.PreferRawRepresentable {
-	public static var bridge: Defaults.RawRepresentableBridge<Self> { Defaults.RawRepresentableBridge() }
+extension DefaultsEnum.Serializable where Self: Codable & RawRepresentable & DefaultsEnum.PreferRawRepresentable {
+	public static var bridge: DefaultsEnum.RawRepresentableBridge<Self> { DefaultsEnum.RawRepresentableBridge() }
 }
 
-extension Defaults.Serializable where Self: RawRepresentable {
-	public static var bridge: Defaults.RawRepresentableBridge<Self> { Defaults.RawRepresentableBridge() }
+extension DefaultsEnum.Serializable where Self: RawRepresentable {
+	public static var bridge: DefaultsEnum.RawRepresentableBridge<Self> { DefaultsEnum.RawRepresentableBridge() }
 }
 
-extension Defaults.Serializable where Self: NSSecureCoding & NSObject {
-	public static var bridge: Defaults.NSSecureCodingBridge<Self> { Defaults.NSSecureCodingBridge() }
+extension DefaultsEnum.Serializable where Self: NSSecureCoding & NSObject {
+	public static var bridge: DefaultsEnum.NSSecureCodingBridge<Self> { DefaultsEnum.NSSecureCodingBridge() }
 }
 
-extension Optional: Defaults.Serializable where Wrapped: Defaults.Serializable {
+extension Optional: DefaultsEnum.Serializable where Wrapped: DefaultsEnum.Serializable {
 	public static var isNativelySupportedType: Bool { Wrapped.isNativelySupportedType }
-	public static var bridge: Defaults.OptionalBridge<Wrapped> { Defaults.OptionalBridge() }
+	public static var bridge: DefaultsEnum.OptionalBridge<Wrapped> { DefaultsEnum.OptionalBridge() }
 }
 
-extension Defaults.CollectionSerializable where Element: Defaults.Serializable {
-	public static var bridge: Defaults.CollectionBridge<Self> { Defaults.CollectionBridge() }
+extension DefaultsEnum.CollectionSerializable where Element: DefaultsEnum.Serializable {
+	public static var bridge: DefaultsEnum.CollectionBridge<Self> { DefaultsEnum.CollectionBridge() }
 }
 
-extension Defaults.SetAlgebraSerializable where Element: Defaults.Serializable & Hashable {
-	public static var bridge: Defaults.SetAlgebraBridge<Self> { Defaults.SetAlgebraBridge() }
+extension DefaultsEnum.SetAlgebraSerializable where Element: DefaultsEnum.Serializable & Hashable {
+	public static var bridge: DefaultsEnum.SetAlgebraBridge<Self> { DefaultsEnum.SetAlgebraBridge() }
 }
 
-extension Set: Defaults.Serializable where Element: Defaults.Serializable {
-	public static var bridge: Defaults.SetBridge<Element> { Defaults.SetBridge() }
+extension Set: DefaultsEnum.Serializable where Element: DefaultsEnum.Serializable {
+	public static var bridge: DefaultsEnum.SetBridge<Element> { DefaultsEnum.SetBridge() }
 }
 
-extension Array: Defaults.Serializable where Element: Defaults.Serializable {
+extension Array: DefaultsEnum.Serializable where Element: DefaultsEnum.Serializable {
 	public static var isNativelySupportedType: Bool { Element.isNativelySupportedType }
-	public static var bridge: Defaults.ArrayBridge<Element> { Defaults.ArrayBridge() }
+	public static var bridge: DefaultsEnum.ArrayBridge<Element> { DefaultsEnum.ArrayBridge() }
 }
 
-extension Dictionary: Defaults.Serializable where Key: LosslessStringConvertible & Hashable, Value: Defaults.Serializable {
+extension Dictionary: DefaultsEnum.Serializable where Key: LosslessStringConvertible & Hashable, Value: DefaultsEnum.Serializable {
 	public static var isNativelySupportedType: Bool { Value.isNativelySupportedType }
-	public static var bridge: Defaults.DictionaryBridge<Key, Value> { Defaults.DictionaryBridge() }
+	public static var bridge: DefaultsEnum.DictionaryBridge<Key, Value> { DefaultsEnum.DictionaryBridge() }
 }
 
-extension UUID: Defaults.Serializable {
-	public static let bridge = Defaults.UUIDBridge()
+extension UUID: DefaultsEnum.Serializable {
+	public static let bridge = DefaultsEnum.UUIDBridge()
 }
 
 @available(iOS 15.0, macOS 11.0, tvOS 15.0, watchOS 8.0, iOSApplicationExtension 15.0, macOSApplicationExtension 11.0, tvOSApplicationExtension 15.0, watchOSApplicationExtension 8.0, *)
-extension Color: Defaults.Serializable {
-	public static let bridge = Defaults.ColorBridge()
+extension Color: DefaultsEnum.Serializable {
+	public static let bridge = DefaultsEnum.ColorBridge()
 }
 
-extension Range: Defaults.RangeSerializable where Bound: Defaults.Serializable {
-	public static var bridge: Defaults.RangeBridge<Range> { Defaults.RangeBridge() }
+extension Range: DefaultsEnum.RangeSerializable where Bound: DefaultsEnum.Serializable {
+	public static var bridge: DefaultsEnum.RangeBridge<Range> { DefaultsEnum.RangeBridge() }
 }
 
-extension ClosedRange: Defaults.RangeSerializable where Bound: Defaults.Serializable {
-	public static var bridge: Defaults.RangeBridge<ClosedRange> { Defaults.RangeBridge() }
+extension ClosedRange: DefaultsEnum.RangeSerializable where Bound: DefaultsEnum.Serializable {
+	public static var bridge: DefaultsEnum.RangeBridge<ClosedRange> { DefaultsEnum.RangeBridge() }
 }
 
 #if os(macOS)
 /**
 `NSColor` conforms to `NSSecureCoding`, so it goes to `NSSecureCodingBridge`.
 */
-extension NSColor: Defaults.Serializable {}
+extension NSColor: DefaultsEnum.Serializable {}
 #else
 /**
 `UIColor` conforms to `NSSecureCoding`, so it goes to `NSSecureCodingBridge`.
 */
-extension UIColor: Defaults.Serializable {}
+extension UIColor: DefaultsEnum.Serializable {}
 #endif

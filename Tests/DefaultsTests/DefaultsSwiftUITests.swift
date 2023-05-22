@@ -10,7 +10,7 @@ typealias NativeColor = UIColor
 #endif
 
 @available(macOS 11.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-extension Defaults.Keys {
+extension DefaultsEnum.Keys {
 	fileprivate static let hasUnicorn = Key<Bool>("swiftui_hasUnicorn", default: false)
 	fileprivate static let user = Key<User>("swiftui_user", default: User(username: "Hank", password: "123456"))
 	fileprivate static let setInt = Key<Set<Int>>("swiftui_setInt", default: Set(1...3))
@@ -35,12 +35,12 @@ struct ContentView: View {
 final class DefaultsSwiftUITests: XCTestCase {
 	override func setUp() {
 		super.setUp()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	override func tearDown() {
 		super.tearDown()
-		Defaults.removeAll()
+		DefaultsEnum.removeAll()
 	}
 
 	func testSwiftUIObserve() {

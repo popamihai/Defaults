@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-extension Defaults {
+extension DefaultsEnum {
 	/**
 	Custom `Subscription` for `UserDefaults` key observation.
 	*/
@@ -72,11 +72,11 @@ extension Defaults {
 	Returns a type-erased `Publisher` that publishes changes related to the given key.
 
 	```swift
-	extension Defaults.Keys {
+	extension DefaultsEnum.Keys {
 		static let isUnicornMode = Key<Bool>("isUnicornMode", default: false)
 	}
 
-	let publisher = Defaults.publisher(.isUnicornMode).map(\.newValue)
+	let publisher = DefaultsEnum.publisher(.isUnicornMode).map(\.newValue)
 
 	let cancellable = publisher.sink { value in
 		print(value)
@@ -84,7 +84,7 @@ extension Defaults {
 	}
 	```
 
-	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``Defaults/updates(_:initial:)-9eh8`` instead.
+	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``DefaultsEnum/updates(_:initial:)-9eh8`` instead.
 	*/
 	public static func publisher<Value: Serializable>(
 		_ key: Key<Value>,
@@ -99,7 +99,7 @@ extension Defaults {
 	/**
 	Publisher for multiple `Key<T>` observation, but without specific information about changes.
 
-	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``Defaults/updates(_:initial:)-9eh8`` instead.
+	- Warning: This method exists for backwards compatibility and will be deprecated sometime in the future. Use ``DefaultsEnum/updates(_:initial:)-9eh8`` instead.
 	*/
 	public static func publisher(
 		keys: _AnyKey...,

@@ -164,7 +164,7 @@ extension Collection {
 	}
 }
 
-extension Defaults {
+extension DefaultsEnum {
 	@usableFromInline
 	internal static func isValidKeyPath(name: String) -> Bool {
 		// The key must be ASCII, not start with @, and cannot contain a dot.
@@ -172,7 +172,7 @@ extension Defaults {
 	}
 }
 
-extension Defaults.Serializable {
+extension DefaultsEnum.Serializable {
 	/**
 	Cast a `Serializable` value to `Self`.
 
@@ -186,7 +186,7 @@ extension Defaults.Serializable {
 	return Value.toValue(anyObject)
 	```
 	*/
-	static func toValue<T: Defaults.Serializable>(_ anyObject: Any, type: T.Type = Self.self) -> T? {
+	static func toValue<T: DefaultsEnum.Serializable>(_ anyObject: Any, type: T.Type = Self.self) -> T? {
 		if
 			T.isNativelySupportedType,
 			let anyObject = anyObject as? T
@@ -194,8 +194,8 @@ extension Defaults.Serializable {
 			return anyObject
 		}
 
-		guard let nextType = T.Serializable.self as? any Defaults.Serializable.Type else {
-			// This is a special case for the types which do not conform to `Defaults.Serializable` (for example, `Any`).
+		guard let nextType = T.Serializable.self as? any DefaultsEnum.Serializable.Type else {
+			// This is a special case for the types which do not conform to `DefaultsEnum.Serializable` (for example, `Any`).
 			return T.bridge.deserialize(anyObject as? T.Serializable) as? T
 		}
 
@@ -212,7 +212,7 @@ extension Defaults.Serializable {
 	```
 	*/
 	@usableFromInline
-	internal static func toSerializable<T: Defaults.Serializable>(_ value: T) -> Any? {
+	internal static func toSerializable<T: DefaultsEnum.Serializable>(_ value: T) -> Any? {
 		if T.isNativelySupportedType {
 			return value
 		}
@@ -221,8 +221,8 @@ extension Defaults.Serializable {
 			return nil
 		}
 
-		guard let next = serialized as? any Defaults.Serializable else {
-			// This is a special case for the types which do not conform to `Defaults.Serializable` (for example, `Any`).
+		guard let next = serialized as? any DefaultsEnum.Serializable else {
+			// This is a special case for the types which do not conform to `DefaultsEnum.Serializable` (for example, `Any`).
 			return serialized
 		}
 
@@ -270,7 +270,7 @@ internal func runtimeWarn(
 			.fault,
 			// A token that identifies the containing executable or dylib image.
 			dso: dynamicSharedObject,
-			log: OSLog(subsystem: "com.apple.runtime-issues", category: "Defaults"),
+			log: OSLog(subsystem: "com.apple.runtime-issues", category: "DefaultsEnum"),
 			"%@",
 			message
 		)
